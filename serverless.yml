@@ -63,7 +63,7 @@ functions:
     events:
       - http:
           path: notes
-          method: post
+          method: put
           cors: true
 
 
