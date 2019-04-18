@@ -57,6 +57,13 @@ functions:
           path: notes
           method: get
           cors: true
+  update:
+    handler: routes/update.update
+    events:
+      - http:
+          path: notes
+          method: post
+          cors: true
 
 resources:
   Resources:
