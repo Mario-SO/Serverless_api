@@ -1,4 +1,6 @@
 {
-    "userId": "para_listar",
-    "note": "soy la nota3"
+    "body":{
+        "userId": "para_listar",
+        "note": "soy la nota3"
+    }
 }
