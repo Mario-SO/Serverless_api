@@ -14,7 +14,7 @@ def update(event, context):
     }
 
     try:
-        dynamoTable.update_item(Key=item, UpdateExpression='SET noteContent = :val1',
+        dynamoTable.update_item(Key=item, UpdateExpression='SET noteContent = :val1 ',
         ExpressionAttributeValues={
         ':val1': body['note']
             }
