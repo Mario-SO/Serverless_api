@@ -4,23 +4,30 @@ import time
 import uuid
 import boto3
 
-dynamo = boto3.client('dynamodb')
-dynamoTable = dynamo.table(os.environ['dynamoTableName'])
+dynamo = boto3.resource('dynamodb')
+dynamoTable = dynamo.Table(os.environ['dynamoTableName'])
 
 def create(event, context):
+    print(event)
 
-    print (event)
-    userId = event['User']
-    Note = event['Note']
-
-    body = {
-        "message": "Go Serverless v1.0! Your function executed successfully!",
-        "input": event
+    item={
+        'userId': event['User'],
+        'noteId': str(uuid.uuid4()),
+        'noteContent': event['Note'],
+        'date': int(time.time() * 1000)
     }
 
+    headers = {
+      "Access-Control-Allow-Origin": "*",
+      "Access-Control-Allow-Credentials": "true"
+    }
+
+    response = dynamoTable.put_item(Item=item)
+
     response = {
+        "headers": headers,
         "statusCode": 200,
-        "body": json.dumps(body)
+        "body": json.dumps('Created Succesfully')
     }
 
     return response

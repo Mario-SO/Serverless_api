@@ -1,7 +1,7 @@
 service: aws-python3 # NOTE: update this with your service name
 
 custom:
-  tablename: MainTable
+  tableName: MainTable
   tableThroughput: 1
 
 plugins:
@@ -29,8 +29,13 @@ provider:
         - arn:aws:dynamodb:${self:provider.region}:#{AWS::AccountId}:${self:custom.tableName}
        
 functions:
-  hello:
-    handler: handler.hello
+  create:
+    handler: routes/create.create
+    events:
+      - http:
+          path: notes
+          method: post
+          cors: true
 
 resources:
   Resources:
