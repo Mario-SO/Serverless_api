@@ -36,6 +36,13 @@ functions:
           path: notes
           method: post
           cors: true
+  get:
+    handler: routes/get.get
+    events:
+      - http:
+          path: notes
+          method: get
+          cors: true
 
 resources:
   Resources:
