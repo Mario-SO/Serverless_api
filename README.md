@@ -1,2 +1,2 @@
-# ServerLess_API
+# Serverless_API
 Just a serverless api
