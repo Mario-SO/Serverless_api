@@ -1,11 +1,8 @@
 import json
-import os
 import time
 import uuid
-import boto3
-
-dynamo = boto3.resource('dynamodb')
-dynamoTable = dynamo.Table(os.environ['dynamoTableName'])
+from libs.resourcesLibs import dynamoTable
+from libs.responsesLibs import success, failure
 
 def create(event, context):
     print(event)
@@ -17,17 +14,11 @@ def create(event, context):
         'date': int(time.time() * 1000)
     }
 
-    headers = {
-      "Access-Control-Allow-Origin": "*",
-      "Access-Control-Allow-Credentials": "true"
-    }
-
-    response = dynamoTable.put_item(Item=item)
-
-    response = {
-        "headers": headers,
-        "statusCode": 200,
-        "body": json.dumps('Created Succesfully')
-    }
+    try:
+      dynamoTable.put_item(Item=item, Exists=True)
+      response = success('Created Succesfully')
+    except Exception as e:
+      print(e)
+      response = failure('Could not create item')
 
     return response

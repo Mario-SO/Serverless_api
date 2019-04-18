@@ -26,7 +26,7 @@ provider:
         - dynamodb:DeleteItem
       Resource:
         # Sobre el recurso que actua es decir la tabla
-        - arn:aws:dynamodb:${self:provider.region}:#{AWS::AccountId}:${self:custom.tableName}
+        - arn:aws:dynamodb:${self:provider.region}:#{AWS::AccountId}:table/${self:custom.tableName}
        
 functions:
   create:
