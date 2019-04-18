@@ -15,7 +15,7 @@ def create(event, context):
     }
 
     try:
-      dynamoTable.put_item(Item=item, Exists=True)
+      dynamoTable.put_item(Item=item)
       response = success('Created Succesfully')
     except Exception as e:
       print(e)
