@@ -6,12 +6,14 @@ from libs.responsesLibs import success, failure
 
 def create(event, context):
     print(event)
+    
     body = json.loads(event['body'])
+
     item={
         'userId': body['userId'],
         'noteId': str(uuid.uuid4()),
-        'noteContent': body['note'],
-        'date': str(datetime.datetime.now())
+        'noteContent': event['note'],
+        'creationDate': str(datetime.datetime.now())
     }
 
     try:
