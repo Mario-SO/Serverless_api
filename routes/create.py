@@ -1,15 +1,16 @@
 import datetime
 import uuid
+import json
 from libs.resourcesLibs import dynamoTable
 from libs.responsesLibs import success, failure
 
 def create(event, context):
     print(event)
-
+    body = json.loads(event['body'])
     item={
-        'userId': event['userId'],
+        'userId': body['userId'],
         'noteId': str(uuid.uuid4()),
-        'noteContent': event['note'],
+        'noteContent': body['note'],
         'date': str(datetime.datetime.now())
     }
 

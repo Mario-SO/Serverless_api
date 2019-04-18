@@ -1,9 +1,10 @@
-service: aws-python3 # NOTE: update this with your service name
+service: serverless-notes
 
 custom:
   tableName: MainTable
   tableThroughput: 1
-
+  stage: dev
+  
 plugins:
   - serverless-pseudo-parameters
 
@@ -65,23 +66,13 @@ functions:
           method: post
           cors: true
 
+
+# Create our resources with separate CloudFormation templates
 resources:
-  Resources:
-    NotesTable:
-      Type: AWS::DynamoDB::Table
-      Properties:
-        TableName: ${self:custom.tableName}
-        AttributeDefinitions:
-          - AttributeName: userId
-            AttributeType: S
-          - AttributeName: noteId
-            AttributeType: S
-        KeySchema:
-          - AttributeName: userId
-            KeyType: HASH
-          - AttributeName: noteId
-            KeyType: RANGE
-        # Set the capacity based on the stage
-        ProvisionedThroughput:
-          ReadCapacityUnits: ${self:custom.tableThroughput}
-          WriteCapacityUnits: ${self:custom.tableThroughput}
+  # API Gateway Errors
+  - ${file(resources/api-gateway-errors.yml)}
+  # DynamoDB
+  - ${file(resources/dynamodb-mainTable.yml)}
+  # Cognito
+  - ${file(resources/cognito-user-pool.yml)}
+  - ${file(resources/cognito-identity-pool.yml)}
