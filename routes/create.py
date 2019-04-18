@@ -1,5 +1,4 @@
-import json
-import time
+import datetime
 import uuid
 from libs.resourcesLibs import dynamoTable
 from libs.responsesLibs import success, failure
@@ -8,10 +7,10 @@ def create(event, context):
     print(event)
 
     item={
-        'userId': event['User'],
+        'userId': event['userId'],
         'noteId': str(uuid.uuid4()),
-        'noteContent': event['Note'],
-        'date': int(time.time() * 1000)
+        'noteContent': event['note'],
+        'date': str(datetime.datetime.now())
     }
 
     try:
