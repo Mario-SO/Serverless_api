@@ -1,19 +1,22 @@
 import datetime
+import json
 from libs.resourcesLibs import dynamoTable
 from libs.responsesLibs import success, failure
 
 def update(event, context):
     print(event)
 
+    body = json.loads(event['body'])
+
     item={
-        'userId': event['userId'],
-        'noteId': event['noteId'],
+        'userId': body['userId'],
+        'noteId': body['noteId']
     }
 
     try:
         dynamoTable.update_item(Key=item, UpdateExpression='SET noteContent = :val1',
         ExpressionAttributeValues={
-        ':val1': event['note']
+        ':val1': body['note']
             }
         )
         response = success('Updated Succesfully')

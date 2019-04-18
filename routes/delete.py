@@ -1,12 +1,15 @@
 from libs.resourcesLibs import dynamoTable
 from libs.responsesLibs import success, failure
+import json
 
 def delete(event, context):
     print(event)
 
+    body = json.loads(event['body'])
+
     item={
-        'userId': event['userId'],
-        'noteId': event['noteId']
+        'userId': body['userId'],
+        'noteId': body['noteId']
     }
 
     try:
