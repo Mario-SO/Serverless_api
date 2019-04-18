@@ -50,6 +50,13 @@ functions:
           path: notes
           method: delete
           cors: true
+  list:
+    handler: routes/list.list
+    events:
+      - http:
+          path: notes
+          method: get
+          cors: true
 
 resources:
   Resources:
