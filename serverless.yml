@@ -11,6 +11,8 @@ provider:
   name: aws
   runtime: python3.7
   region: eu-west-1
+  environment: 
+    dynamoTableName: ${self:custom.tableName}
 
   # Como esta dentro de provider -> le da este role a todas las funciones que definamos en la app
   iamRoleStatements:
