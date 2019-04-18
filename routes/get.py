@@ -1,12 +1,8 @@
-import json
-import os
 import time
 import uuid
-import boto3
 import simplejson as json
-
-dynamo = boto3.resource('dynamodb')
-dynamoTable = dynamo.Table(os.environ['dynamoTableName'])
+from libs.resourcesLibs import dynamoTable
+from libs.responsesLibs import success, failure
 
 def get(event, context):
     print(event)
@@ -16,18 +12,14 @@ def get(event, context):
         'noteId': event['noteId']
     }
 
-    headers = {
-        "Access-Control-Allow-Origin": "*",
-        "Access-Control-Allow-Credentials": "true"
-    }
-
     dynamoResponse = dynamoTable.get_item(Key=item)
     #print(dynamoResponse)
 
-    response = {
-        "headers": headers,
-        "statusCode": 200,
-        "body": json.dumps(dynamoResponse['Item'])
-    }
+    try:
+      dynamoTable.get_item(Item=item)
+      response = success(json.dumps(dynamoResponse['Item']))
+    except Exception as e:
+      print(e)
+      response = failure('That Item doesn\'t exist')
 
     return response
