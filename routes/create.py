@@ -22,12 +22,12 @@ def create(event, context):
       "Access-Control-Allow-Credentials": "true"
     }
 
-    response = dynamoTable.put_item(Item=item)
+    dynamoTable.put_item(Item=item)
 
     response = {
         "headers": headers,
         "statusCode": 200,
-        "body": json.dumps('Created Succesfully')
+        "body": json.dumps('Created successfully')
     }
 
     return response
