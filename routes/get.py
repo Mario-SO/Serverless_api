@@ -1,22 +1,28 @@
 from libs.resourcesLibs import dynamoTable
-from libs.responsesLibs import success, failure
+from libs.responsesLibs import success, failure, unauthorized
 import json
 
 def get(event, context):
     print(event)
 
-    body = json.loads(event['body'])
+    # Check for cognitoIdentiyId
+    try:
+        userId = event['requestContext']['identity']['cognitoIdentityId']
+    except:
+        return unauthorized()
 
-    item={
-        'userId': body['userId'],
-        'noteId': body['noteId']
-    }
+    pathParameters = event['pathParameters']
 
     try:
-      dynamoResponse = dynamoTable.get_item(Key=item)
-      response = success(dynamoResponse['Item'])
+        item={
+            'userId': userId,
+            'id': pathParameters['id']
+        }
+        dynamoResponse = dynamoTable.get_item(Key=item)
+        try:
+            return success(dynamoResponse['Item'])
+        except:
+            return failure({"status": False, "error": "Item not found." })
     except Exception as e:
-      print(e)
-      response = failure('That Item doesn\'t exist')
-
-    return response
+        print(e)
+        return failure({"status": False})

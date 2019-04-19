@@ -1,28 +1,35 @@
 import datetime
-import json
+import json, uuid
 from libs.resourcesLibs import dynamoTable
-from libs.responsesLibs import success, failure
+from libs.responsesLibs import success, failure, unauthorized
+from boto3.dynamodb.conditions import Attr
+
 
 def update(event, context):
     print(event)
 
+    # Check for cognitoIdentiyId
+    try:
+        userId = event['requestContext']['identity']['cognitoIdentityId']
+    except:
+        return unauthorized()
+      
+    # Load request body and pathParameters
     body = json.loads(event['body'])
-
-    item={
-        'userId': body['userId'],
-        'noteId': body['noteId']
-    }
+    pathParameters = event['pathParameters']
 
     try:
-        dynamoTable.update_item(Key=item, UpdateExpression='SET noteContent = :val1, creationDate = :val2',
-        ExpressionAttributeValues={
-        ':val1': body['note'],
-        ':val2': str(datetime.datetime.now()) 
-            }
+        item={
+            'userId': userId,
+            'id': pathParameters['id'],
+            'noteContent': body['note'],
+            'creationDate': str(datetime.datetime.now())
+        }
+        dynamoTable.put_item(
+            Item=item, 
+            ConditionExpression = Attr('id').exists() & Attr('userId').eq(userId)
         )
-        response = success('Updated Succesfully')
+        return success({"status": True})
     except Exception as e:
         print(e)
-        response = failure('Could not update item')
-
-    return response
+        return failure({"status": False})

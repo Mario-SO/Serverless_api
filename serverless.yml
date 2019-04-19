@@ -34,23 +34,35 @@ functions:
     handler: routes/create.create
     events:
       - http:
-          path: notes
+          path: note
           method: post
           cors: true
+          authorizer: aws_iam
   get:
     handler: routes/get.get
     events:
       - http:
-          path: notes
+          path: note/{id}
           method: get
           cors: true
+          authorizer: aws_iam
+
   delete:
     handler: routes/delete.delete
     events:
       - http:
-          path: notes
+          path: note/{id}
           method: delete
           cors: true
+          authorizer: aws_iam
+  update:
+    handler: routes/update.update
+    events:
+      - http:
+          path: note/{id}
+          method: put
+          cors: true
+          authorizer: aws_iam
   list:
     handler: routes/list.list
     events:
@@ -58,13 +70,7 @@ functions:
           path: notes
           method: get
           cors: true
-  update:
-    handler: routes/update.update
-    events:
-      - http:
-          path: notes
-          method: put
-          cors: true
+          authorizer: aws_iam
 
 
 # Create our resources with separate CloudFormation templates

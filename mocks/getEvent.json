@@ -1,4 +1,10 @@
 {
-    "userId": "puta_basura",
-    "noteId": "316b15a9-095d-4563-a97f-000d1c4505d9"
-}
+    "pathParameters": {
+        "id": "10251998-8287-4b88-83c9-b6eeb8a94d51"
+    },
+    "requestContext": {
+      "identity": {
+        "cognitoIdentityId": "USER-SUB-1234"
+      }
+    }
+  }

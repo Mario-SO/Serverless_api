@@ -1,22 +1,25 @@
 from libs.resourcesLibs import dynamoTable
-from libs.responsesLibs import success, failure
+from libs.responsesLibs import success, failure, unauthorized
 from boto3.dynamodb.conditions import Attr
 import json
 
 def list(event, context):
     print(event)
 
-    body = json.loads(event['body'])
-
+    # Check for cognitoIdentiyId
     try:
-        dynamoResponse = dynamoTable.scan(FilterExpression=Attr('userId').eq(body['userId']))
-        response = success(dynamoResponse['Items']) 
-        
-        if dynamoResponse['Items'] == []:
-            raise Exception
+        userId = event['requestContext']['identity']['cognitoIdentityId']
+    except:
+        return unauthorized()
 
+    # Query dynamoDB
+    try:
+        dynamoResponse = dynamoTable.scan(FilterExpression=Attr('userId').eq(userId))
+        if dynamoResponse['Items'] == []:
+            return failure({"status": False, "error": "No items found"})
+        else:
+            return success(dynamoResponse['Items']) 
     except Exception as e:
         print(e)
-        response = failure('That user doesn\'t exist')
-
+        response = failure({"status": False})
     return response

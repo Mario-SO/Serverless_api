@@ -14,3 +14,6 @@ def success(body):
 
 def failure(body):
     return buildResponse(500, body)
+
+def unauthorized():
+    return buildResponse(401, "Access denied")

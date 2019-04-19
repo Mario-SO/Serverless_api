@@ -1,6 +1,8 @@
 {
-    "body":{
-        "userId": "para_listar",
-        "note": "soy la nota3"
+    "body": "{\"note\":\"hello world\"}",
+    "requestContext": {
+      "identity": {
+        "cognitoIdentityId": "USER-SUB-1234"
+      }
     }
-}
+  }
