@@ -7,18 +7,13 @@ from boto3.dynamodb.conditions import Attr
 
 def update(event, context):
     print(event)
-
-    # Check for cognitoIdentiyId
-    try:
-        userId = event['requestContext']['identity']['cognitoIdentityId']
-    except:
-        return unauthorized()
-      
+     
     # Load request body and pathParameters
-    body = json.loads(event['body'])
     pathParameters = event['pathParameters']
+    userId = event['requestContext']['identity']['cognitoIdentityId']
 
     try:
+        body = json.loads(event['body'])
         item={
             'userId': userId,
             'id': pathParameters['id'],

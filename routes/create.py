@@ -7,19 +7,13 @@ from libs.responsesLibs import success, failure, unauthorized
 def create(event, context):
     print(event)
     
-    # Check for cognitoIdentiyId
     try:
-        userId = event['requestContext']['identity']['cognitoIdentityId']
-    except:
-        return unauthorized()
-      
-    # Load request body
-    body = json.loads(event['body'])
+        # Load request body
+        body = json.loads(event['body'])
 
-    # Write to dynamoDB -> create item
-    try:
+        # Write to dynamoDB -> create item
         item={
-            'userId': userId,
+            'userId': event['requestContext']['identity']['cognitoIdentityId'],
             'id': str(uuid.uuid4()),
             'noteContent': body['note'],
             'creationDate': str(datetime.datetime.now())

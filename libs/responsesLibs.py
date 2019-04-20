@@ -1,3 +1,5 @@
+import json
+
 def buildResponse(statusCode, body):
     response = {
         "statusCode": statusCode,
@@ -5,7 +7,7 @@ def buildResponse(statusCode, body):
             "Access-Control-Allow-Origin": "*",
             "Access-Control-Allow-Credentials": "true"
         },
-        "body": body
+        "body": json.dumps(body)
     }
     return response
 

@@ -1,0 +1,23 @@
+npx aws-api-gateway-cli-test \
+--username='admin@example.com' \
+--password='Passw0rd!' \
+--user-pool-id='eu-west-1_Qi9LHeFm8' \
+--app-client-id='3di1rv38vc82ake495pbm7qvo0' \
+--cognito-region='eu-west-1' \
+--identity-pool-id='eu-west-1:94da4ab6-1a0a-4253-8df3-7d7a1ee6be6a' \
+--invoke-url='https://3fv6xc0m1d.execute-api.eu-west-1.amazonaws.com/dev' \
+--api-gateway-region='eu-west-1' \
+--path-template='/note' \
+--method='POST' \
+--body='{"note":"hello world"}'
+
+aws cognito-idp sign-up \
+  --region eu-west-1 \
+  --client-id 3di1rv38vc82ake495pbm7qvo0 \
+  --username admin@example.com \
+  --password Passw0rd!
+
+  aws cognito-idp admin-confirm-sign-up \
+  --region eu-west-1 \
+  --user-pool-id eu-west-1_Qi9LHeFm8 \
+  --username admin@example.com

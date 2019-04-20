@@ -5,17 +5,12 @@ import json
 def get(event, context):
     print(event)
 
-    # Check for cognitoIdentiyId
-    try:
-        userId = event['requestContext']['identity']['cognitoIdentityId']
-    except:
-        return unauthorized()
-
+    # Load pathParameters, if no parameters, it wil load null, could integrate error handling
     pathParameters = event['pathParameters']
 
     try:
         item={
-            'userId': userId,
+            'userId': event['requestContext']['identity']['cognitoIdentityId'],
             'id': pathParameters['id']
         }
         dynamoResponse = dynamoTable.get_item(Key=item)

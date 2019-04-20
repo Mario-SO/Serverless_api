@@ -6,15 +6,11 @@ import json
 def list(event, context):
     print(event)
 
-    # Check for cognitoIdentiyId
-    try:
-        userId = event['requestContext']['identity']['cognitoIdentityId']
-    except:
-        return unauthorized()
-
     # Query dynamoDB
     try:
-        dynamoResponse = dynamoTable.scan(FilterExpression=Attr('userId').eq(userId))
+        dynamoResponse = dynamoTable.scan(
+            FilterExpression=Attr('userId').eq(event['requestContext']['identity']['cognitoIdentityId'])
+        )
         if dynamoResponse['Items'] == []:
             return failure({"status": False, "error": "No items found"})
         else:
